@@ -6,7 +6,7 @@ require "rails/all"
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)
 
-module UrlShorterner
+module UrlShortener
   class Application < Rails::Application
     # Initialize configuration defaults for originally generated Rails version.
     config.load_defaults 8.0
@@ -23,5 +23,9 @@ module UrlShorterner
     #
     # config.time_zone = "Central Time (US & Canada)"
     # config.eager_load_paths << Rails.root.join("extras")
+
+    config.cache_store = :redis_cache_store, {
+      url: URI.join(ENV.fetch("URL_SHORTENER_REDIS_URL"), "1"),
+    }
   end
 end

@@ -14,12 +14,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_07_075420) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
-  create_table "shorterned_urls", force: :cascade do |t|
+  create_table "shortened_urls", force: :cascade do |t|
     t.string "compressed_original_url", null: false
     t.string "identifier", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["compressed_original_url"], name: "index_shorterned_urls_on_compressed_original_url", unique: true
-    t.index ["identifier"], name: "index_shorterned_urls_on_identifier", unique: true
+    t.index ["compressed_original_url"], name: "index_shortened_urls_on_compressed_original_url", unique: true
+    t.index ["identifier"], name: "index_shortened_urls_on_identifier", unique: true
   end
 end
