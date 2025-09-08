@@ -1,22 +1,21 @@
 module Utils
   module Compress
     class << self
-      # Compresses and encodes the given text using Zlib deflate and Base64 encoding.
+      # Compresses the given text using Zlib deflate.
       #
       # @param text [String] the input text to be compressed and encoded
-      # @return [String] the compressed and Base64-encoded string
+      # @return [String] the compressed string.
       def encode(text)
-        compressed_text = Zlib::Deflate.deflate(text)
-        [compressed_text].pack("m0")
+        Zlib::Deflate.deflate(text)
       end
 
-      # Decodes a compressed and Base64-encoded string.
+      # Decodes a compressed string.
       #
-      # @param compressed_text [String] The compressed text, encoded in Base64.
+      # @param compressed_text [String] The compressed text.
       # @return [String] The original, decompressed string.
       # @raise [Zlib::DataError] If the input is not valid compressed data.
       def decode(compressed_text)
-        Zlib::Inflate.inflate(compressed_text.unpack1("m"))
+        Zlib::Inflate.inflate(compressed_text)
       end
     end
   end

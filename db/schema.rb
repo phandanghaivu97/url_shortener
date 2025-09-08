@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_07_075420) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_08_134335) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
   create_table "shortened_urls", force: :cascade do |t|
-    t.string "compressed_original_url", null: false
     t.string "identifier", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.binary "compressed_original_url", null: false
     t.index ["compressed_original_url"], name: "index_shortened_urls_on_compressed_original_url", unique: true
     t.index ["identifier"], name: "index_shortened_urls_on_identifier", unique: true
   end
