@@ -1,0 +1,103 @@
+
+<h1>URL Shortener</h1>
+
+<h3>Encode</h3>
+<form id="url-shortener-form">
+	<div>
+		<label for="long_url">Enter your long URL:</label><br>
+		<input type="text" id="long_url" name="long_url" size="60">
+	</div>
+	<div>
+		<button type="submit" class="btn-info">Shorten</button>
+	</div>
+</form>
+
+<div id="short-url-result" style="margin-top: 20px; display: none;">
+	<strong>Shortened URL:</strong>
+	<a id="short-url-link" href="#" target="_blank"></a>
+</div>
+
+<h3 class="mt-5">Decode</h3>
+<form id="decode-shortened-url-form">
+  <div>
+    <label for="identifier">Enter the short code:</label><br>
+    <input type="text" id="identifier" name="identifier" size="60">
+  </div>
+  <div>
+    <button type="submit" class="btn-info">Decode</button>
+  </div>
+</form>
+<div id="short-url-decoded-result" style="margin-top: 20px; display: none;">
+	<strong>Decoded URL:</strong>
+	<a id="short-url-decoded-link" href="#" target="_blank"></a>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('url-shortener-form');
+    const resultDiv = document.getElementById('short-url-result');
+    const resultLink = document.getElementById('short-url-link');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const longUrl = document.getElementById('long_url').value;
+      const response = await fetch(
+        '/encode',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ original_url: longUrl }),
+        }
+      );
+
+
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const shortUrl = window.location.origin + '/' + data.identifier;
+
+      resultLink.href = shortUrl;
+      resultLink.textContent = shortUrl;
+      resultDiv.style.display = 'block';
+    });
+  });
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('decode-shortened-url-form');
+    const resultDiv = document.getElementById('short-url-decoded-result');
+    const resultLink = document.getElementById('short-url-decoded-link');
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const longUrl = document.getElementById('identifier').value;
+      const response = await fetch(
+        '/decode',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ identifier: longUrl }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error(`Response status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      const shortUrl = data.original_url
+
+      resultLink.href = shortUrl;
+      resultLink.textContent = shortUrl;
+      resultDiv.style.display = 'block';
+    });
+  });
+</script>

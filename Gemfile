@@ -7,6 +7,8 @@ gem "bootsnap", require: false
 gem "kamal", require: false
 gem "pg"
 gem "dotenv"
+gem "active_model_serializers"
+gem "importmap-rails"
 
 group :development, :test do
   gem "pry"
