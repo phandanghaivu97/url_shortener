@@ -4,7 +4,7 @@ class HomeController < ApplicationController
   def index; end
 
   def encode
-    shortened_url = ShortenedUrl.create_from_long_url!(params[:original_url])
+    shortened_url = ShortenedUrl.shortify!(params[:original_url])
 
     render json: shortened_url, serializer: ShortenedUrl::EncodeSerializer, status: :created
   end
@@ -15,6 +15,8 @@ class HomeController < ApplicationController
 
   def show
     redirect_to original_url, allow_other_host: true
+  rescue ActiveRecord::RecordNotFound
+    redirect_to "/404"
   end
 
   private
