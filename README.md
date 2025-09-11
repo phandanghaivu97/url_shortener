@@ -4,23 +4,30 @@ A shortening service that creates short, shareable links from long URLs. This ap
 
 ## Features
 
-**URL Shortening**: Convert long URLs into short, 6-character alphanumeric identifiers
-- **URL Expansion**: Decode shortened URLs back to original URLs
-- **Automatic Redirection**: Direct navigation to shortened URLs redirects to original destinations
-- **Duplicate Detection**: Returns existing short URL for already-shortened links
-- **Data Compression**: Efficiently stores original URLs using compression
-- **Caching**: Redis-based caching for improved performance
-- **Collision Handling**: Automatic retry mechanism for identifier conflicts
+- **URL Shortening**: Convert long URLs into short, 6-character alphanumeric identifiers generated using Rails built-in `SecureRandom` for unique ID generation, potential for collisions, but it makes the identifiers shorter and more *unpredictable*. This approach is suitable for current version, where security and unpredictability are prioritized over sequential ordering since the current implementation have not applied authentication.
+- **URL Expansion**: Decode shortened URLs back to original URLs.
+- **Data Compression**: Since URLs can be long, the original URLs are stored in a compressed format to save database space.
+- **Duplicate Detection**: Using unique constraints on the compressed URL, let the database handle duplicate detection by itself. Handle conflicts gracefully by returning the existing URL.
+- **Caching**: Utilize Redis to cache frequently accessed URLs for faster retrieval.
+- **Collision Handling**: Handle potential identifier collisions by regenerating identifiers 3 times before returning an error.
 
-## Potential feature:
--
 
+## Url shortening flow
+### 1. Shortening a URL
+<img src="docs\img\url_shortening.png" alt="URL Shortening Flow" width="600"/>
+
+### 2. Expanding a URL
+
+<img src="docs\img\url_shortening_decoding.png" alt="URL Expanding Flow" width="600"/>
 
 ## Tech Stack
 
 - **Backend**: Ruby on Rails 8.0.x
 - **Database**: PostgreSQL
 - **Caching**: Redis
+
+## Demonstration
+You can try it out by [clicking here](http://ec2-3-85-204-114.compute-1.amazonaws.com/).
 
 ## API Documentation
 
@@ -199,3 +206,12 @@ bundle exec rspec --format documentation
 # Using Docker
 docker-compose exec -e RAILS_ENV=test web bundle exec rspec
 ```
+
+## Potential features:
+- **Analytics**: Track usage statistics for shortened URLs.
+- **User Accounts**: Allow users to authenticate their shortened URLs, by this way we can also applying another identifier generation strategy like Base62 encoding of an auto-incrementing ID.
+- **Custom Aliases**: Enable users to create custom short URL identifiers.
+- **Expiration**: Let authenticated users set expiration dates for their own shortened URLs.
+- **Rate Limiting**: Prevent abuse by limiting the number of requests per user/IP, or using other services like Cloudflare.
+- **Alerting**: Notify operators of suspicious activity such as potential abuse, security threats, identifier generator depletion, or other anomalies.
+- ...and more!
