@@ -44,6 +44,14 @@ RSpec.describe ShortenedUrl, type: :model do
       end
     end
 
+    describe "#hash_original_url" do
+      it "generates a SHA256 hash of the original URL" do
+        expected_hash = Digest::SHA256.hexdigest("https://example.com")
+        shortened_url.hash_original_url
+        expect(shortened_url.hashed_original_url).to eq(expected_hash)
+      end
+    end
+
     describe "#compress_original_url" do
       it "compresses the original URL using Utils::Compress.encode" do
         allow(Utils::Compress).to receive(:encode).with("https://example.com").and_return("compressed_data")
@@ -110,8 +118,8 @@ RSpec.describe ShortenedUrl, type: :model do
       end
     end
 
-    context "when compressed_original_url is existed" do
-      it "returns existing ShortenedUrl when compressed_original_url already exists" do
+    context "when original_url is existed" do
+      it "returns existing ShortenedUrl when original_url already exists" do
         first_url = ShortenedUrl.shortify!(long_url)
         second_url = ShortenedUrl.shortify!(long_url)
 

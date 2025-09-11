@@ -7,7 +7,7 @@ A shortening service that creates short, shareable links from long URLs. This ap
 - **URL Shortening**: Convert long URLs into short, 6-character alphanumeric identifiers generated using Rails built-in `SecureRandom` for unique ID generation, potential for collisions, but it makes the identifiers shorter and more *unpredictable*. This approach is suitable for current version, where security and unpredictability are prioritized over sequential ordering since the current implementation have not applied authentication.
 - **URL Expansion**: Decode shortened URLs back to original URLs.
 - **Data Compression**: Since URLs can be long, the original URLs are stored in a compressed format to save database space.
-- **Duplicate Detection**: Using unique constraints on the compressed URL, let the database handle duplicate detection by itself. Handle conflicts gracefully by returning the existing URL.
+- **Duplicate Detection**: Using unique constraints on the hashed URL, let the database handle duplicate detection by itself. Handle conflicts gracefully by returning the existing URL.
 - **Caching**: Utilize Redis to cache frequently accessed URLs for faster retrieval.
 - **Collision Handling**: Handle potential identifier collisions by regenerating identifiers 3 times before returning an error.
 

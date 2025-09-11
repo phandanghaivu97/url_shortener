@@ -10,6 +10,10 @@ class ShortenedUrl < ApplicationRecord
     self.identifier = SecureRandom.alphanumeric(6)
   end
 
+  def hash_original_url
+    self.hashed_original_url = Digest::SHA256.hexdigest(original_url)
+  end
+
   def compress_original_url
     self.compressed_original_url = Utils::Compress.encode(original_url)
   end
@@ -27,6 +31,7 @@ class ShortenedUrl < ApplicationRecord
 
       shortened_url.generate_identifier
       shortened_url.compress_original_url
+      shortened_url.hash_original_url
 
       retries = 0
 
@@ -48,8 +53,8 @@ class ShortenedUrl < ApplicationRecord
 
             raise ActiveRecord::RecordNotUnique, "There is an unexpected error occured. Please try again."
           end
-        when "compressed_original_url"
-          return find_by(compressed_original_url: shortened_url.compressed_original_url)
+        when "hashed_original_url"
+          return find_by(hashed_original_url: shortened_url.hashed_original_url)
         end
       end
 
