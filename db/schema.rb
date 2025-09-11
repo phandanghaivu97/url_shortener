@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_09_08_134335) do
+ActiveRecord::Schema[8.0].define(version: 2025_09_11_122039) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -19,7 +19,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_09_08_134335) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.binary "compressed_original_url", null: false
-    t.index ["compressed_original_url"], name: "index_shortened_urls_on_compressed_original_url", unique: true
+    t.string "hashed_original_url", null: false
+    t.index ["hashed_original_url"], name: "index_shortened_urls_on_hashed_original_url", unique: true
     t.index ["identifier"], name: "index_shortened_urls_on_identifier", unique: true
   end
 end
