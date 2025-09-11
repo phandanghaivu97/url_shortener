@@ -27,6 +27,6 @@ module UrlShortener
     config.cache_store = :redis_cache_store, {
       url: URI.join(ENV.fetch("URL_SHORTENER_REDIS_URL"), "1"),
     }
-    routes.default_url_options[:host] = ENV.fetch("SERVER_HOST", "http://localhost:3000")
+    config.hosts << ENV["SERVER_HOST"]
   end
 end

@@ -23,7 +23,7 @@ class HomeController < ApplicationController
 
   def original_url
     @original_url ||= Rails.cache.fetch(["shortened_url", params[:identifier]], expires_in: 12.hours) do
-      ShortenedUrl.find_by!(identifier: params[:identifier]).decompress_original_url
+      ShortenedUrl.find_by!(identifier: params[:identifier].split("/").last).decompress_original_url
     end
   end
 end
