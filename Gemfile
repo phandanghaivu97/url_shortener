@@ -9,6 +9,9 @@ gem "pg"
 gem "dotenv"
 gem "active_model_serializers"
 gem "importmap-rails"
+gem "json_api_client"
+gem "jsonapi-resources"
+gem "csv"
 
 group :development, :test do
   gem "pry"
@@ -16,5 +19,7 @@ group :development, :test do
   gem "rubocop-rails-omakase", require: false
   gem "rspec-rails"
   gem "shoulda-matchers", require: false
+  gem "factory_bot_rails"
+  gem "faker"
 end
 
