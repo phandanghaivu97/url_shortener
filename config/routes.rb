@@ -10,8 +10,12 @@ Rails.application.routes.draw do
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")
-  root "home#index"
+  # root "home#index"
   post "encode", to: "home#encode"
   post "decode", to: "home#decode"
-  get ":identifier", to: "home#show"
+  # get ":identifier", to: "home#show"
+
+  jsonapi_resources :users
+  jsonapi_resources :contacts
+  jsonapi_resources :phone_numbers
 end
